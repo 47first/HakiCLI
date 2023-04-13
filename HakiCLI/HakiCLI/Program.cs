@@ -1,16 +1,18 @@
-﻿using System.Numerics;
-
-namespace Runtime
+﻿namespace Runtime
 {
     public class Program
     {
         private static void Main(string[] args)
         {
-            MazeBuilder builder = new();
+            GameView gameView = new GameView();
 
-            var newMaze = builder.Build(100);
+            while (true)
+            {
+                gameView.Draw();
+                Thread.Sleep(100);
 
-            Console.WriteLine(newMaze.Rooms.Count());
+                gameView._loggerArea.Write("Bebra");
+            }
         }
     }
 }

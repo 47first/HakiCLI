@@ -1,0 +1,15 @@
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\bin\Debug\net6.0\HakiCLI.exe
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\bin\Debug\net6.0\HakiCLI.deps.json
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\bin\Debug\net6.0\HakiCLI.runtimeconfig.json
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\bin\Debug\net6.0\HakiCLI.dll
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\bin\Debug\net6.0\HakiCLI.pdb
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\HakiCLI.csproj.AssemblyReference.cache
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\HakiCLI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\HakiCLI.AssemblyInfoInputs.cache
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\HakiCLI.AssemblyInfo.cs
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\HakiCLI.csproj.CoreCompileInputs.cache
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\HakiCLI.dll
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\refint\HakiCLI.dll
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\HakiCLI.pdb
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\HakiCLI.genruntimeconfig.cache
+C:\Users\lyagu\Desktop\HakiCLI\HakiCLI\HakiCLI\obj\Debug\net6.0\ref\HakiCLI.dll

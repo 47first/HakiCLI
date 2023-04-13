@@ -4,14 +4,17 @@
     {
         private static void Main(string[] args)
         {
-            GameView gameView = new GameView();
+            InputHost inputHost = new();
+            Logger logger = new();
+            PlayerInput playerInput = new(inputHost, logger);
+
+            GameHost gameHost = new(inputHost, logger, playerInput);
+
+            inputHost.Start();
 
             while (true)
             {
-                gameView.Draw();
-                Thread.Sleep(100);
-
-                gameView._loggerArea.Write("Bebra");
+                Thread.Sleep(10);
             }
         }
     }

@@ -10,13 +10,15 @@
         public event Action<ConsoleKeyInfo> OnPressKey;
         private Task? _inputThread;
 
-        public void Start()
+        ~InputHost()
         {
-            if (_inputThread is not null)
-                throw new InvalidOperationException("Input host already started!");
+            Dispose();
+        }
 
+        public InputHost()
+        {
             _inputThread = Task.Run(() => {
-                while(true)
+                while (true)
                 {
                     var consoleKey = Console.ReadKey();
 

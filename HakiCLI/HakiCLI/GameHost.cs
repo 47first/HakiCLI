@@ -1,33 +1,49 @@
-﻿using System.Numerics;
-
-namespace Runtime
+﻿namespace Runtime
 {
     public sealed class GameHost
     {
         public PlayerInput PlayerInput { get; private set; }
+        public CommandHost CommandHost { get; private set; }
         public IInputHost InputHost { get; private set; }
         public ILogger Logger { get; private set; }
         public Player Player { get; private set; }
         public Maze Maze { get; private set; }
 
-        public GameHost(IInputHost inputHost, ILogger logger, PlayerInput playerInput)
+        public GameHost(IInputHost inputHost, ILogger logger)
         {
+            CommandHost = new CommandHost();
             InputHost = inputHost;
             Logger = logger;
-            PlayerInput = playerInput;
+            PlayerInput = new(InputHost, Logger, CommandHost);
 
-            MazeBuilder builder = new();
-            Maze = builder.Build(10);
+            ConfigureCommands();
 
-            Console.WriteLine($"distance from 0,0 to 0,1 : {Vector2.Distance(Vector2.Zero, new Vector2(0, 1))}");
+            BuildMaze();
 
             Player = new();
             Player.OnChangePosition += ShowRoomData;
+            Player.OnChangePosition += ChangeCommandContextObject;
         }
+
+        private void ChangeCommandContextObject() => CommandHost.SetContextObject(Maze.GetRoomAt(Player.Position));
 
         public void StartGame()
         {
             Player.Position = Maze.GetRoom(0).Position;
+
+            CommandHost.SetContextObject(Maze.GetRoom(0));
+        }
+
+        private void ConfigureCommands()
+        {
+            CommandHost.AddCommand(new SetRoomSideObjectCommand());
+            CommandHost.AddCommand(new ShowMazeObjectDataCommand());
+        }
+
+        private void BuildMaze()
+        {
+            MazeBuilder builder = new();
+            Maze = builder.Build(10);
         }
 
         private void ShowRoomData()

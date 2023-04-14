@@ -9,6 +9,8 @@
     {
         public List<LogSegment> Logs { get; private set; } = new();
 
+        public static void Log(string message) => Console.WriteLine(message);
+
         public void Log(string message, ConsoleColor foreColor, ConsoleColor backColor)
         {
             Console.Write(message);

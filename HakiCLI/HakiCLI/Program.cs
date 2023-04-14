@@ -19,7 +19,7 @@
 
             while (true)
             {
-                Thread.Sleep(10);
+
             }
         }
     }

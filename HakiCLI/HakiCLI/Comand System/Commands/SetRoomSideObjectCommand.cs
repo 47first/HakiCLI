@@ -4,43 +4,32 @@
     {
         public void Execute(CommandContext context)
         {
-            if (context.Subject is MazeRoom mazeRoom == false ||
-                IsArgsSuit(context.Args) == false)
+            if (context.Subject is not MazeRoom mazeRoom)
                 return;
 
-            var argsSide = GetSideByArgs(context.Args);
-
-            context.Subject = mazeRoom.GetObjectBySide(argsSide);
+            if(TryGetSideByArgs(context.Args, out RoomSide roomSide))
+                context.Subject = mazeRoom.GetObjectBySide(roomSide);
         }
 
-        private bool IsArgsSuit(string[] args)
+        private bool TryGetSideByArgs(string[] args, out RoomSide roomSide)
         {
-            foreach (var arg in args)
-            {
-                if(arg == "e" || arg == "w" || arg == "s" || arg == "n")
-                    return true;
-            }
+            roomSide = RoomSide.East;
 
-            return false;
-        }
-
-        private RoomSide GetSideByArgs(string[] args)
-        {
             foreach (var arg in args)
             {
                 try
                 {
-                    var side = GetSideByString(arg);
+                    roomSide = GetSideByString(arg);
 
-                    return side;
+                    return true;
                 }
-                catch(ArgumentException ex)
+                catch (ArgumentException ex)
                 {
                     continue;
                 }
             }
 
-            throw new InvalidOperationException("No side have found");
+            return false;
         }
 
         private RoomSide GetSideByString(string sideString)

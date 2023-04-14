@@ -16,13 +16,13 @@
             Logger = logger;
             PlayerInput = new(InputHost, Logger, CommandHost);
 
-            ConfigureCommands();
-
-            BuildMaze();
-
             Player = new();
             Player.OnChangePosition += ShowRoomData;
             Player.OnChangePosition += ChangeCommandContextObject;
+
+            BuildMaze();
+
+            ConfigureCommands();
         }
 
         private void ChangeCommandContextObject() => CommandHost.SetContextObject(Maze.GetRoomAt(Player.Position));
@@ -38,6 +38,7 @@
         {
             CommandHost.AddCommand(new SetRoomSideObjectCommand());
             CommandHost.AddCommand(new ShowMazeObjectDataCommand());
+            CommandHost.AddCommand(new EnterCommand(Player));
         }
 
         private void BuildMaze()

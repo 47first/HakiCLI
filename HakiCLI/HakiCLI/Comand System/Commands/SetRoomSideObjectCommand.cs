@@ -13,7 +13,7 @@
 
         private bool TryGetSideByArgs(string[] args, out RoomSide roomSide)
         {
-            roomSide = RoomSide.East;
+            roomSide = RoomSide.Right;
 
             foreach (var arg in args)
             {
@@ -36,10 +36,10 @@
         {
             return sideString switch
             {
-                "e" => RoomSide.East,
-                "w" => RoomSide.West,
-                "s" => RoomSide.South,
-                "n" => RoomSide.North,
+                "r" => RoomSide.Right,
+                "l" => RoomSide.Left,
+                "b" => RoomSide.Backward,
+                "f" => RoomSide.Forward,
                 _ => throw new ArgumentException("Undefined side")
             };
         }

@@ -48,19 +48,18 @@ namespace Runtime
             var relativePosition = posTo - posFrom;
 
             if (relativePosition == new Vector2(1, 0))
-                return RoomSide.East;
+                return RoomSide.Right;
 
             if (relativePosition == new Vector2(-1, 0))
-                return RoomSide.West;
+                return RoomSide.Left;
 
             if (relativePosition == new Vector2(0, 1))
-                return RoomSide.North;
+                return RoomSide.Forward;
 
             if (relativePosition == new Vector2(0, -1))
-                return RoomSide.South;
+                return RoomSide.Backward;
 
-            Console.WriteLine($"{posTo} - {posFrom} = {relativePosition}");
-            throw new ArgumentException();
+            throw new ArgumentException($"{posTo} - {posFrom} = {relativePosition}");
         }
 
         private Vector2 GetRandomDirection()

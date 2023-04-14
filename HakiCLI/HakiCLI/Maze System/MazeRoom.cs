@@ -4,10 +4,10 @@ namespace Runtime
 {
     public enum RoomSide
     {
-        North,
-        East,
-        South,
-        West
+        Forward,
+        Right,
+        Backward,
+        Left
     }
 
     public class MazeRoom: MazeObject

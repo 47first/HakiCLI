@@ -53,15 +53,15 @@
 
             if (Maze.GetRoomAt(Player.Position) is MazeRoom room)
             {
-                var westObject = room.GetObjectBySide(RoomSide.West);
-                var northObject = room.GetObjectBySide(RoomSide.North);
-                var southObject = room.GetObjectBySide(RoomSide.South);
-                var eastObject = room.GetObjectBySide(RoomSide.East);
+                var leftObject = room.GetObjectBySide(RoomSide.Left);
+                var forwardObject = room.GetObjectBySide(RoomSide.Forward);
+                var backwardObject = room.GetObjectBySide(RoomSide.Backward);
+                var rightObject = room.GetObjectBySide(RoomSide.Right);
 
-                Logger.Log(westObject != null ? $"West: {westObject.GetType().Name}\n" : "");
-                Logger.Log(northObject != null ? $"North: {northObject.GetType().Name}\n" : "");
-                Logger.Log(southObject != null ? $"South: {southObject.GetType().Name}\n" : "");
-                Logger.Log(eastObject != null ? $"East: {eastObject.GetType().Name}\n" : "");
+                Logger.Log(leftObject != null ? $"Left: {leftObject.GetType().Name}\n" : "");
+                Logger.Log(forwardObject != null ? $"Forward: {forwardObject.GetType().Name}\n" : "");
+                Logger.Log(backwardObject != null ? $"Backward: {backwardObject.GetType().Name}\n" : "");
+                Logger.Log(rightObject != null ? $"Right: {rightObject.GetType().Name}\n" : "");
             }
         }
     }

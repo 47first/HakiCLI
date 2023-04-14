@@ -10,10 +10,9 @@ namespace Runtime
 
         public void AddRoom(MazeRoom room) => _rooms.Add(room);
 
-        public bool ContainsRoomAtPosition(Vector2 position)
-        {
-            return _rooms.Where(room => room.Position == position).Count() > 0;
-        }
+        public bool ContainsRoomAt(Vector2 position) => GetRoomAt(position) != null;
+
+        public MazeRoom GetRoomAt(Vector2 position) => _rooms.FirstOrDefault(room => room.Position == position);
 
         public MazeRoom GetRoom(int index) => _rooms[index];
     }

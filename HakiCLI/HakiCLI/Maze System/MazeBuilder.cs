@@ -15,7 +15,7 @@ namespace Runtime
             {
                 currentPosition += GetRandomDirection();
 
-                if (maze.ContainsRoomAtPosition(currentPosition) == false)
+                if (maze.ContainsRoomAt(currentPosition) == false)
                 {
                     buildedRooms++;
                     maze.AddRoom(new MazeRoom(currentPosition));

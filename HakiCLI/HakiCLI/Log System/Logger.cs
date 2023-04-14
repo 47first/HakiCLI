@@ -2,7 +2,7 @@
 {
     public interface ILogger
     {
-        public void Log(string message, ConsoleColor foreColor, ConsoleColor backColor);
+        public void Log(string message, ConsoleColor foreColor = ConsoleColor.White, ConsoleColor backColor = ConsoleColor.Black);
     }
 
     public class Logger : ILogger

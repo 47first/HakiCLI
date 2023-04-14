@@ -13,9 +13,11 @@
 
             GameHost gameHost = new(inputHost, logger, playerInput);
 
-            chain.SetContextObject(gameHost.Maze.GetRoom(1));
+            chain.SetContextObject(gameHost.Maze.GetRoom(0));
 
             inputHost.Start();
+
+            gameHost.StartGame();
 
             while (true)
             {

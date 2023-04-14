@@ -2,11 +2,13 @@
 {
     public sealed class PlayerInput
     {
+        private CommandHost _commandChain;
         private IInputHost _inputHost;
         private ILogger _logger;
         private string _inputLine;
-        public PlayerInput(IInputHost inputHost, ILogger logger)
+        public PlayerInput(IInputHost inputHost, ILogger logger, CommandHost commandChain)
         {
+            _commandChain = commandChain;
             _logger = logger;
             _inputHost = inputHost;
             inputHost.OnPressKey += OnPlayerPressKey;
@@ -21,6 +23,13 @@
 
             if (keyInfo.Key == ConsoleKey.Spacebar)
                 _inputLine += ' ';
+
+            if (keyInfo.Key == ConsoleKey.Enter)
+            {
+                _commandChain.Request(_inputLine);
+                _inputLine = "";
+                return;
+            }
 
             if (char.IsLetterOrDigit(keyInfo.KeyChar))
                 _inputLine += keyInfo.KeyChar;

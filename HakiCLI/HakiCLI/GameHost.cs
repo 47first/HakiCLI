@@ -11,6 +11,9 @@
             InputHost = inputHost;
             Logger = logger;
             PlayerInput = playerInput;
+
+            MazeBuilder builder = new();
+            Maze = builder.Build(10);
         }
     }
 }

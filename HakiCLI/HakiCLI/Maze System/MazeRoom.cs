@@ -21,6 +21,14 @@ namespace Runtime
             Position = position;
         }
 
+        public MazeObject GetObjectBySide(RoomSide side)
+        {
+            if(_roomSides.ContainsKey(side))
+                return _roomSides[side];
+
+            return null;
+        }
+
         public bool TryAddMazeObject(RoomSide side, MazeObject mazeObject) => _roomSides.TryAdd(side, mazeObject);
     }
 }

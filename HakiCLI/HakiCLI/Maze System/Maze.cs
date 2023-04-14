@@ -14,5 +14,7 @@ namespace Runtime
         {
             return _rooms.Where(room => room.Position == position).Count() > 0;
         }
+
+        public MazeRoom GetRoom(int index) => _rooms[index];
     }
 }

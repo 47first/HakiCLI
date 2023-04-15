@@ -2,7 +2,7 @@
 {
     public interface ILogger
     {
-        public void Log(string message, ConsoleColor foreColor = ConsoleColor.White, ConsoleColor backColor = ConsoleColor.Black);
+        public void Log(LogSegment logSegment);
     }
 
     public class Logger : ILogger
@@ -11,11 +11,7 @@
 
         public static void Log(string message) => Console.WriteLine(message);
 
-        public void Log(string message, ConsoleColor foreColor, ConsoleColor backColor)
-        {
-            Console.Write(message);
-            Logs.Add(new(message, foreColor, backColor));
-        }
+        public void Log(LogSegment logSegment) => Logs.Add(logSegment);
     }
 
     public struct LogSegment
@@ -24,7 +20,7 @@
         public ConsoleColor foreColor;
         public ConsoleColor backColor;
 
-        public LogSegment(string message, ConsoleColor foreColor, ConsoleColor backColor)
+        public LogSegment(string message, ConsoleColor foreColor = ConsoleColor.White, ConsoleColor backColor = ConsoleColor.Black)
         {
             this.message = message;
             this.foreColor = foreColor;

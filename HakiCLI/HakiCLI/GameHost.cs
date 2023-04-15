@@ -49,8 +49,8 @@
 
         private void ShowRoomData()
         {
-            Logger.Log($"You enter the room, there are:\n");
-
+            string logMessage = "You enter the room, there are:\n";
+            
             if (Maze.GetRoomAt(Player.Position) is MazeRoom room)
             {
                 var leftObject = room.GetObjectBySide(RoomSide.Left);
@@ -58,11 +58,13 @@
                 var backwardObject = room.GetObjectBySide(RoomSide.Backward);
                 var rightObject = room.GetObjectBySide(RoomSide.Right);
 
-                Logger.Log(leftObject != null ? $"Left: {leftObject.GetType().Name}\n" : "");
-                Logger.Log(forwardObject != null ? $"Forward: {forwardObject.GetType().Name}\n" : "");
-                Logger.Log(backwardObject != null ? $"Backward: {backwardObject.GetType().Name}\n" : "");
-                Logger.Log(rightObject != null ? $"Right: {rightObject.GetType().Name}\n" : "");
+                logMessage += leftObject != null ? $"Left: {leftObject.GetType().Name}\n" : "";
+                logMessage += forwardObject != null ? $"Forward: {forwardObject.GetType().Name}\n" : "";
+                logMessage += backwardObject != null ? $"Backward: {backwardObject.GetType().Name}\n" : "";
+                logMessage += rightObject != null ? $"Right: {rightObject.GetType().Name}\n" : "";
             }
+
+            Logger.Log(logMessage);
         }
     }
 }

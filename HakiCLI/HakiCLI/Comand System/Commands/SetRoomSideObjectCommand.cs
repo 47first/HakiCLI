@@ -36,10 +36,10 @@
         {
             return sideString switch
             {
-                "r" => RoomSide.Right,
-                "l" => RoomSide.Left,
-                "b" => RoomSide.Backward,
-                "f" => RoomSide.Forward,
+                "r" or "right" => RoomSide.Right,
+                "l" or "left" => RoomSide.Left,
+                "b" or "backward" => RoomSide.Backward,
+                "f" or "forward" => RoomSide.Forward,
                 _ => throw new ArgumentException("Undefined side")
             };
         }

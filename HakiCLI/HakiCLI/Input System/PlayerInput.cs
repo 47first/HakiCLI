@@ -34,7 +34,7 @@
             if (char.IsLetterOrDigit(keyInfo.KeyChar))
                 _inputLine += keyInfo.KeyChar;
 
-            _logger.Log($"Input: {_inputLine}\n", ConsoleColor.White, ConsoleColor.Black);
+            _logger.Log(new($"Input: {_inputLine}\n"));
         }
     }
 }

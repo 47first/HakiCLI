@@ -11,9 +11,13 @@
 
             gameHost.StartGame();
 
+            ConsoleMatrix mainMatrix = new(new(0, 0, 30, 3));
+
+            GameView gameView = new(mainMatrix);
+
             while (true)
             {
-
+                gameView.Draw();
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Runtime
 {
-    public sealed class ConsoleMatrix
+    public class ConsoleMatrix
     {
         private readonly List<ConsoleMatrix> _children = new();
         private ConsoleChar[,] _matrix;
@@ -23,36 +23,28 @@
         public ConsoleChar GetChar(int x, int y)
         {
             foreach (ConsoleMatrix childMatrix in _children)
-                if(childMatrix.Transform.InRange(x, y))
-                    return childMatrix.GetChar(x - childMatrix.Transform.x, y - childMatrix.Transform.y);
+            {
+                if (childMatrix.Transform.InRange(x, y))
+                {
+                    var childChar = childMatrix.GetChar(x - childMatrix.Transform.x, y - childMatrix.Transform.y);
 
-            return _matrix[x, y];
+                    if (childChar.IsEmpty == false)
+                        return childChar;
+                }
+            }
+
+            return GetLocalChar(x, y);
         }
+
+        protected virtual ConsoleChar GetLocalChar(int x, int y) => _matrix[x, y];
 
         public void Reset()
         {
             for (int x = 0; x < _matrix.GetLength(0); x++)
             {
                 for (int y = 0; y < _matrix.GetLength(1); y++)
-                    _matrix[x, y] = new(' ', ConsoleColor.White, ConsoleColor.Black);
+                    _matrix[x, y] = ConsoleChar.Empty;
             }
         }
-    }
-
-    public struct ConsoleChar
-    {
-        public char symbol;
-        public ConsoleColor foreColor;
-        public ConsoleColor backColor;
-
-        public ConsoleChar(char symbol = ' ', ConsoleColor foreColor = ConsoleColor.White,
-            ConsoleColor backColor = ConsoleColor.Black)
-        {
-            this.symbol = symbol;
-            this.foreColor = foreColor;
-            this.backColor = backColor;
-        }
-
-        public bool IsEmpty() => char.IsWhiteSpace(symbol) && backColor == ConsoleColor.Black;
     }
 }

@@ -16,9 +16,8 @@
             var matrixGegments = GetMatrixSegments();
         }
 
-
-        private readonly List<LogSegment> _matrixSegments = new();
-        private IEnumerable<LogSegment> GetMatrixSegments()
+        private readonly List<TextSpan> _matrixSegments = new();
+        private IEnumerable<TextSpan> GetMatrixSegments()
         {
             _matrixSegments.Clear();
 
@@ -28,7 +27,7 @@
             foreach (var log in _logger.Logs)
             {
                 _matrixSegments.Add(log);
-                charsCounter += log.message.Length;
+                charsCounter += log.text.Length;
 
                 if (charsCounter >= avaliableChars)
                     break;

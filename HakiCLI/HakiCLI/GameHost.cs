@@ -64,7 +64,7 @@
                 logMessage += rightObject != null ? $"Right: {rightObject.GetType().Name}\n" : "";
             }
 
-            Logger.Log(logMessage);
+            Logger.Log(new(logMessage));
         }
     }
 }

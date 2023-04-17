@@ -8,13 +8,14 @@
         {
             _inGameMatrix = matrix;
 
-            var firstText = new TextMatrix(new(0, 0, 30, 8));
+            var firstText = new TextMatrix(new(0, 0, 30, 10));
             var secondText = new TextMatrix(new(0, 3, 30, 2));
 
-            List<TextSpan> textSpans = new() { new("hellofdsa\nlkfjlskadfjlkasdfj;l\nkjdsafl;k;jaslkdfjs;lksdjflkjf\noisdajfoijasdoifjs", ConsoleColor.Blue), new("hellofdsa\nlkfjlskadfjlkasdfj;l\nkjdsafl;k;jaslkdfjs;lksdjflkjf\noisdajfoijasdoifjs", ConsoleColor.White) };
+            List<TextSpan> textSpans = new() { new("hellofdsa\nheljlj", ConsoleColor.Blue, ConsoleColor.Red),
+                new("hellofdsa\nheljlj", ConsoleColor.White, ConsoleColor.Gray), new("hellofdsa\nheljlj", ConsoleColor.Red) };
 
             firstText.SendText(textSpans);
-            secondText.SendText(new TextSpan[] { new TextSpan("------------------------------------------------") });
+            //secondText.SendText(new TextSpan[] { new TextSpan("------------------------------------------------") });
 
             _inGameMatrix.AddChild(secondText);
             _inGameMatrix.AddChild(firstText);

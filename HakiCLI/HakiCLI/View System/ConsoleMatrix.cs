@@ -14,7 +14,12 @@
             Reset();
         }
 
-        public void AddChild(ConsoleMatrix childMatrix) => _children.Add(childMatrix);
+        public void AddChild(ConsoleMatrix childMatrix)
+        {
+            childMatrix.Transform.SetMaxSize(Transform.Width, Transform.Height);
+
+            _children.Add(childMatrix);
+        }
 
         public void RemoveChild(ConsoleMatrix childMatrix) => _children.Remove(childMatrix);
 

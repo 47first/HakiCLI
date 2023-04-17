@@ -8,7 +8,7 @@
 
         public ConsoleMatrix(ConsoleRect rect)
         {
-            _matrix = new ConsoleChar[rect.width, rect.height];
+            _matrix = new ConsoleChar[rect.Width, rect.Height];
             Transform = rect;
 
             Reset();
@@ -26,7 +26,7 @@
             {
                 if (childMatrix.Transform.InRange(x, y))
                 {
-                    var childChar = childMatrix.GetChar(x - childMatrix.Transform.x, y - childMatrix.Transform.y);
+                    var childChar = childMatrix.GetChar(x - childMatrix.Transform.X, y - childMatrix.Transform.Y);
 
                     if (childChar.IsEmpty == false)
                         return childChar;

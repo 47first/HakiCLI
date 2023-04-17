@@ -11,7 +11,7 @@
 
             gameHost.StartGame();
 
-            ConsoleMatrix mainMatrix = new(new(0, 0, 30, 3));
+            ConsoleMatrix mainMatrix = new(new(0, 0, 30, 10));
 
             GameView gameView = new(mainMatrix);
 

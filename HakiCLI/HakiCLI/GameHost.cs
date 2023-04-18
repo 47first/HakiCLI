@@ -1,12 +1,17 @@
-﻿namespace Runtime
+﻿using System.Numerics;
+
+namespace Runtime
 {
     public sealed class GameHost
     {
         public PlayerInput PlayerInput { get; private set; }
         public CommandHost CommandHost { get; private set; }
+
         public IInputHost InputHost { get; private set; }
         public ILogger Logger { get; private set; }
+
         public Player Player { get; private set; }
+        public Enemy Enemy { get; private set; }
         public Maze Maze { get; private set; }
 
         public GameHost(IInputHost inputHost, ILogger logger)
@@ -14,15 +19,21 @@
             CommandHost = new CommandHost();
             InputHost = inputHost;
             Logger = logger;
-            PlayerInput = new(InputHost, Logger, CommandHost);
+            PlayerInput = new(InputHost, CommandHost);
+
+            InputHost.OnPressKey += key => Console.WriteLine($"Player: {PlayerInput.InputLine}");
 
             Player = new();
+            Player.OnChangePosition += SetEnemyNextPosition;
             Player.OnChangePosition += ShowRoomData;
             Player.OnChangePosition += ChangeCommandContextObject;
 
             BuildMaze();
 
             ConfigureCommands();
+
+            Enemy = new(Maze);
+            Enemy.OnChangePosition += MentionNoise;
         }
 
         private void ChangeCommandContextObject() => CommandHost.SetContextObject(Maze.GetRoomAt(Player.Position));
@@ -31,7 +42,9 @@
         {
             Player.Position = Maze.GetRoom(0).Position;
 
-            CommandHost.SetContextObject(Maze.GetRoom(0));
+            Enemy.Position = Maze.GetRoom(2).Position;
+
+            Enemy.IsAlive = true;
         }
 
         private void ConfigureCommands()
@@ -64,7 +77,22 @@
                 logMessage += rightObject != null ? $"Right: {rightObject.GetType().Name}\n" : "";
             }
 
-            Logger.Log(new(logMessage));
+            Console.WriteLine(logMessage);
+
+            if (Player.Position == Enemy.Position)
+                Console.WriteLine($"\nAlso there was maniac!");
+        }
+
+        private void MentionNoise()
+        {
+            if(Vector2.Distance(Player.Position, Enemy.Position) == 1)
+                Console.WriteLine($"You hear noise in {Vector2Extensions.GetRelativeSide(Player.Position, Enemy.Position)} side...");
+        }
+
+        private void SetEnemyNextPosition()
+        {
+            if(Player.PreviousPosition == Enemy.Position)
+                Enemy.SetNextPosition(Player.Position);
         }
     }
 }

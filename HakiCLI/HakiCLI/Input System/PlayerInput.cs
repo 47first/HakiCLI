@@ -4,12 +4,13 @@
     {
         private CommandHost _commandChain;
         private IInputHost _inputHost;
-        private ILogger _logger;
         private string _inputLine;
-        public PlayerInput(IInputHost inputHost, ILogger logger, CommandHost commandChain)
+
+        public event Action OnInput;
+
+        public PlayerInput(IInputHost inputHost, CommandHost commandChain)
         {
             _commandChain = commandChain;
-            _logger = logger;
             _inputHost = inputHost;
             inputHost.OnPressKey += OnPlayerPressKey;
         }
@@ -24,7 +25,7 @@
             if (keyInfo.Key == ConsoleKey.Spacebar)
                 _inputLine += ' ';
 
-            if (keyInfo.Key == ConsoleKey.Enter)
+            if (keyInfo.Key == ConsoleKey.Enter && string.IsNullOrEmpty(_inputLine) == false)
             {
                 _commandChain.Request(_inputLine);
                 _inputLine = "";
@@ -33,8 +34,6 @@
 
             if (char.IsLetterOrDigit(keyInfo.KeyChar))
                 _inputLine += keyInfo.KeyChar;
-
-            _logger.Log(new($"Input: {_inputLine}\n"));
         }
     }
 }

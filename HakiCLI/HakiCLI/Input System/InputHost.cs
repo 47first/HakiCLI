@@ -20,7 +20,7 @@
             _inputThread = Task.Run(() => {
                 while (true)
                 {
-                    var consoleKey = Console.ReadKey();
+                    var consoleKey = Console.ReadKey(true);
 
                     lock (this)
                         OnPressKey?.Invoke(consoleKey);

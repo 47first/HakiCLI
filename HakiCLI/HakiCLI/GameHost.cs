@@ -59,12 +59,16 @@ namespace Runtime
         {
             Logger.Log("Player Dead!");
 
+            Enemy.Kill();
+
             State = GameState.GameOver;
         }
 
         private void Win()
         {
             Logger.Log("You Win!");
+
+            Enemy.Kill();
 
             State = GameState.Win;
         }

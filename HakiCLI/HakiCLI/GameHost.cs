@@ -24,12 +24,14 @@ namespace Runtime
 
         public GameHost(IInputHost inputHost, ILogger logger)
         {
-            PlayerInput = new(InputHost, CommandHost);
             CommandHost = new CommandHost();
             InputHost = inputHost;
             Logger = logger;
 
+            PlayerInput = new(InputHost, CommandHost);
+
             Inventory = new();
+            Inventory.AddItem(new("Trap material"), 3);
 
             BuildMaze();
 
@@ -56,13 +58,24 @@ namespace Runtime
         private void BuildMaze()
         {
             MazeBuilder builder = new();
-            Maze = builder.Build(10);
+            Maze = builder.Build(20);
         }
 
         private void ConfigureCommands()
         {
+            CommandHost.AddCommand(GenerateCraftCommand(Inventory));
             CommandHost.AddCommand(new SetRoomSideObjectCommand());
             CommandHost.AddCommand(new EnterCommand(Player));
+        }
+
+        private CraftCommand GenerateCraftCommand(Inventory inventory)
+        {
+            var craftCommand = new CraftCommand(inventory, Logger);
+
+            craftCommand.AddIngredient(new("Trap"), new Dictionary<GameItem, int>()
+            { { new("Trap material"), 3} });
+
+            return craftCommand;
         }
 
         private void PlayerChangeDestination()

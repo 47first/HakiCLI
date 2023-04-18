@@ -23,7 +23,7 @@
 
         public void Action()
         {
-            _lastActionTime += Time.fixedUpdateRateInMilliseconds;
+            _lastActionTime += Time.fixedUpdateRateInMilliseconds * Time.TimeSpeed;
 
             if (_lastActionTime < _actionInterval)
                 return;

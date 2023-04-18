@@ -59,6 +59,5 @@ namespace Runtime
 
             return avaliableObjects.ElementAt(_rnd.Next(0, avaliableObjects.Count()));
         }
-
     }
 }

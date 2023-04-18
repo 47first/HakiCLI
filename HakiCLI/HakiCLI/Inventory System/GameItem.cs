@@ -1,7 +1,12 @@
 ﻿namespace Runtime
 {
-    public struct InventoryItem
+    public struct GameItem
     {
         public string name;
+
+        public GameItem(string name)
+        {
+            this.name = name;
+        }
     }
 }

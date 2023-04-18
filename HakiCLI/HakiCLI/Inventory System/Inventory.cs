@@ -4,6 +4,8 @@
     {
         private readonly Dictionary<GameItem, int> _itemCells = new();
 
+        public IEnumerable<KeyValuePair<GameItem, int>> ItemCells => _itemCells;
+
         public void AddItem(GameItem item, int amount = 1)
         {
             if(_itemCells.ContainsKey(item))

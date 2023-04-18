@@ -5,11 +5,12 @@
         public const int fixedUpdateRateInMilliseconds = 100;
         public const int updateRateInMilliseconds = 10;
 
-        public static event Action FixedUpdate;
-
         private static int _lastFixedUpdateTime = 0;
 
-        public static float SecondsUntilStart { get; private set; }
+        public static event Action FixedUpdate;
+
+        public static float SecondsUntilStart { get; private set; } = 0;
+        public static float TimeSpeed { get; set; } = 1;
 
         static Time() => Task.Run(StartUpdateRate);
 

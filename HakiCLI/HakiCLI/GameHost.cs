@@ -17,16 +17,19 @@ namespace Runtime
         public IInputHost InputHost { get; private set; }
         public ILogger Logger { get; private set; }
 
+        public Inventory Inventory { get; private set; }
         public Player Player { get; private set; }
         public Enemy Enemy { get; private set; }
         public Maze Maze { get; private set; }
 
         public GameHost(IInputHost inputHost, ILogger logger)
         {
+            PlayerInput = new(InputHost, CommandHost);
             CommandHost = new CommandHost();
             InputHost = inputHost;
             Logger = logger;
-            PlayerInput = new(InputHost, CommandHost);
+
+            Inventory = new();
 
             BuildMaze();
 

@@ -37,6 +37,7 @@ namespace Runtime
             Player.Inventory.AddItem(new("Trap material"), 3);
 
             Enemy = new(Logger);
+            Enemy.Inventory.AddItem(new("Key"), 1);
             Enemy.OnChangeDestination += EnemyChangeDestination;
 
             ConfigureCommands();
@@ -55,12 +56,13 @@ namespace Runtime
         private void BuildMaze()
         {
             MazeBuilder builder = new();
-            Maze = builder.Build(20);
+            Maze = builder.Build(10);
         }
 
         private void ConfigureCommands()
         {
             CommandHost.AddCommand(GenerateCraftCommand());
+            CommandHost.AddCommand(new RobCommand(Player, Logger));
             CommandHost.AddCommand(new SetRoomSideObjectCommand());
             CommandHost.AddCommand(new EnterCommand(Player));
         }

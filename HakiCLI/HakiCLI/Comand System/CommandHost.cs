@@ -21,7 +21,7 @@
             foreach (var command in _commands)
             {
                 if (context.IsResponded)
-                    return;
+                    break;
 
                 command.Execute(context);
             }

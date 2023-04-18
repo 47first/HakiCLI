@@ -9,7 +9,7 @@
             ConnectedRoom = connectedRoom;
         }
 
-        public void EnterBy(MazeEntity entity)
+        public virtual void EnterBy(MazeEntity entity)
         {
             entity.Destination = ConnectedRoom;
         }

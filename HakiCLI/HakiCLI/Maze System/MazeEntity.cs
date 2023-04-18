@@ -9,6 +9,8 @@
         public event Action OnAlive;
         public event Action OnDead;
 
+        public Inventory Inventory { get; private set; } = new();
+
         public MazeRoom? Destination
         {
             get => _destination;

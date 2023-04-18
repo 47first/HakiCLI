@@ -15,6 +15,12 @@
 
             if (ContainsEnterArg(context.Args))
             {
+                if (enterable is ILockable lockable && lockable.IsLocked)
+                {
+                    context.FailureMessage = "Door is locked, you can't enter";
+                    return;
+                }
+
                 context.IsHandled = true;
                 enterable.EnterBy(_player);
             }

@@ -17,7 +17,6 @@ namespace Runtime
         public IInputHost InputHost { get; private set; }
         public ILogger Logger { get; private set; }
 
-        public Inventory Inventory { get; private set; }
         public Player Player { get; private set; }
         public Enemy Enemy { get; private set; }
         public Maze Maze { get; private set; }
@@ -30,14 +29,12 @@ namespace Runtime
 
             PlayerInput = new(InputHost, CommandHost);
 
-            Inventory = new();
-            Inventory.AddItem(new("Trap material"), 3);
-
             BuildMaze();
 
             Player = new();
             Player.OnChangeDestination += PlayerChangeDestination;
             Player.OnDead += () => Logger.Log("Player Dead!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Player.Inventory.AddItem(new("Trap material"), 3);
 
             Enemy = new(Logger);
             Enemy.OnChangeDestination += EnemyChangeDestination;
@@ -63,14 +60,14 @@ namespace Runtime
 
         private void ConfigureCommands()
         {
-            CommandHost.AddCommand(GenerateCraftCommand(Inventory));
+            CommandHost.AddCommand(GenerateCraftCommand());
             CommandHost.AddCommand(new SetRoomSideObjectCommand());
             CommandHost.AddCommand(new EnterCommand(Player));
         }
 
-        private CraftCommand GenerateCraftCommand(Inventory inventory)
+        private CraftCommand GenerateCraftCommand()
         {
-            var craftCommand = new CraftCommand(inventory, Logger);
+            var craftCommand = new CraftCommand(Player.Inventory, Logger);
 
             craftCommand.AddIngredient(new("Trap"), new Dictionary<GameItem, int>()
             { { new("Trap material"), 3} });

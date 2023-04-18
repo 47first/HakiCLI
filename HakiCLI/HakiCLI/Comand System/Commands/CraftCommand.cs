@@ -33,7 +33,7 @@
             }
 
             if(context.IsHandled == false)
-                _logger.Log($"There are no ingredients to craft this item...");
+                context.FailureMessage = "There are no ingredients to craft this item...";
         }
 
         private bool TryGetItemToCraft(string name, out GameItem itemToCraft)
@@ -63,7 +63,7 @@
         private void CraftItem(GameItem itemToCraft)
         {
             if (_craftIngredients.TryGetValue(itemToCraft, out var craftIngredients) == false)
-                throw new Exception("No one ingredients");
+                throw new Exception("No ingredients");
 
             foreach (var item in craftIngredients)
                 _inventory.RemoveItem(item.Key, item.Value);

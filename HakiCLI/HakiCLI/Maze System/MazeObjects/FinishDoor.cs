@@ -1,15 +1,13 @@
 ﻿namespace Runtime
 {
-    public sealed class FinishDoor : MazeDoor, ILockable
+    public sealed class FinishDoor: MazeObject, IEnterable, ILockable
     {
-        public FinishDoor(MazeRoom connectedRoom) : base(connectedRoom) { }
-
         public bool IsLocked { get; set; } = true;
 
-        public override void EnterBy(MazeEntity entity)
+        public void EnterBy(MazeEntity entity)
         {
-            if(IsLocked == false)
-                entity.Destination = ConnectedRoom;
+            if (IsLocked == false)
+                Console.WriteLine("You win!");
         }
     }
 }

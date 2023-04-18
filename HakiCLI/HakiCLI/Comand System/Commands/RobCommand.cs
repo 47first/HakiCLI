@@ -2,12 +2,10 @@
 {
     public sealed class RobCommand : ICommand
     {
-        private ILogger _logger;
         private Player _player;
-        public RobCommand(Player player, ILogger logger)
+        public RobCommand(Player player)
         {
             _player = player;
-            _logger = logger;
         }
 
         public void Execute(CommandContext context)
@@ -35,9 +33,7 @@
                 target.Inventory.RemoveItem(itemCell.Key, itemCell.Value);
             }
 
-            _logger.Log("You robed successfully!");
-
-            context.IsHandled = true;
+            context.SuccessMessage = "You robed successfully!";
         }
     }
 }

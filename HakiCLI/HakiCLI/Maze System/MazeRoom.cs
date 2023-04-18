@@ -23,9 +23,9 @@ namespace Runtime
             Position = position;
         }
 
-        public int RoomObjectAmount => _roomSides.Count;
-
         public IEnumerable<MazeEntity> Entities => _entities;
+
+        public int FreeSpace => 4 - _roomSides.Count;
 
         public bool TryAddMazeObject(RoomSide side, MazeObject mazeObject) => _roomSides.TryAdd(side, mazeObject);
 
@@ -58,6 +58,15 @@ namespace Runtime
                 return null;
 
             return avaliableObjects.ElementAt(_rnd.Next(0, avaliableObjects.Count()));
+        }
+
+        public void SetObjectInFreeSpace(MazeObject mazeObject)
+        {
+            if (TryAddMazeObject(RoomSide.Left, mazeObject) ||
+                TryAddMazeObject(RoomSide.Right, mazeObject) ||
+                TryAddMazeObject(RoomSide.Forward, mazeObject) ||
+                TryAddMazeObject(RoomSide.Backward, mazeObject))
+                return;
         }
     }
 }

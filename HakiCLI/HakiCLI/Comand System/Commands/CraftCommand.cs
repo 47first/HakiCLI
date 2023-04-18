@@ -4,12 +4,10 @@
     {
         private readonly Dictionary<GameItem, IEnumerable<KeyValuePair<GameItem, int>>> _craftIngredients = new();
         private Inventory _inventory;
-        private ILogger _logger;
 
-        public CraftCommand(Inventory inventory, ILogger logger)
+        public CraftCommand(Inventory inventory)
         {
             _inventory = inventory;
-            _logger = logger;
         }
 
         public void AddIngredient(GameItem itemToCraft, IEnumerable<KeyValuePair<GameItem, int>> ingredients)
@@ -27,12 +25,12 @@
                 if (TryGetItemToCraft(arg, out GameItem argItem)
                     && IsIngredientsInInventory(argItem))
                 {
-                    context.IsHandled = true;
                     CraftItem(argItem);
+                    context.SuccessMessage = $"{argItem.name} successfully crafted!";
                 }
             }
 
-            if(context.IsHandled == false)
+            if(context.IsResponded == false)
                 context.FailureMessage = "There are no ingredients to craft this item...";
         }
 
@@ -69,8 +67,6 @@
                 _inventory.RemoveItem(item.Key, item.Value);
 
             _inventory.AddItem(itemToCraft);
-
-            _logger.Log($"{itemToCraft.name} successfully created!");
         }
     }
 }

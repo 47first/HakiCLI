@@ -21,7 +21,7 @@
                     return;
                 }
 
-                context.IsHandled = true;
+                context.SuccessMessage = "Entered successfully!";
                 enterable.EnterBy(_player);
             }
         }

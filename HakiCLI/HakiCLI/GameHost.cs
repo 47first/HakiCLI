@@ -31,10 +31,13 @@ namespace Runtime
 
             BuildMaze();
 
+            Maze.SetRandomFreeSpace(new FinishDoor());
+
             Player = new();
             Player.OnChangeDestination += PlayerChangeDestination;
             Player.OnDead += () => Logger.Log("Player Dead!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Player.Inventory.AddItem(new("Trap material"), 3);
+            Player.Inventory.AddItem(new("Key"));
 
             Enemy = new(Logger);
             Enemy.Inventory.AddItem(new("Key"), 1);
@@ -56,20 +59,21 @@ namespace Runtime
         private void BuildMaze()
         {
             MazeBuilder builder = new();
-            Maze = builder.Build(10);
+            Maze = builder.Build(20);
         }
 
         private void ConfigureCommands()
         {
             CommandHost.AddCommand(GenerateCraftCommand());
-            CommandHost.AddCommand(new RobCommand(Player, Logger));
+            CommandHost.AddCommand(new RobCommand(Player));
             CommandHost.AddCommand(new SetRoomSideObjectCommand());
+            CommandHost.AddCommand(new OpenCommand(Player.Inventory));
             CommandHost.AddCommand(new EnterCommand(Player));
         }
 
         private CraftCommand GenerateCraftCommand()
         {
-            var craftCommand = new CraftCommand(Player.Inventory, Logger);
+            var craftCommand = new CraftCommand(Player.Inventory);
 
             craftCommand.AddIngredient(new("Trap"), new Dictionary<GameItem, int>()
             { { new("Trap material"), 3} });

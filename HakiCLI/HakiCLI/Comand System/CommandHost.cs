@@ -28,6 +28,9 @@
 
             if (string.IsNullOrEmpty(context.FailureMessage) == false)
                 Console.WriteLine($"Command Failure Message: {context.FailureMessage}");
+
+            if (string.IsNullOrEmpty(context.SuccessMessage) == false)
+                Console.WriteLine($"{context.SuccessMessage}");
         }
     }
 }

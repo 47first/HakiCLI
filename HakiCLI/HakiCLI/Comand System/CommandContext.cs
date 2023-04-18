@@ -4,17 +4,18 @@
     {
         public object Subject { get; set; }
         public string[] Args { get; private set; }
-        public bool IsHandled { get; set; }
+        public string SuccessMessage { get; set; }
         public string FailureMessage { get; set; }
 
         public CommandContext(string[] args, object subject)
         {
             Args = args;
             Subject = subject;
-            IsHandled = false;
+            SuccessMessage = "";
             FailureMessage = "";
         }
 
-        public bool IsResponded => IsHandled || string.IsNullOrEmpty(FailureMessage) == false;
+        public bool IsResponded => string.IsNullOrEmpty(FailureMessage) == false ||
+            string.IsNullOrEmpty(SuccessMessage) == false;
     }
 }

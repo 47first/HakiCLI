@@ -11,18 +11,23 @@ namespace Runtime
 
     public sealed class GameHost
     {
+        public GameState GameState { get; set; }
+
         public PlayerInput PlayerInput { get; private set; }
         public CommandHost CommandHost { get; private set; }
 
         public IInputHost InputHost { get; private set; }
         public ILogger Logger { get; private set; }
 
+        public TrapController TrapController { get; private set; }
         public Player Player { get; private set; }
         public Enemy Enemy { get; private set; }
         public Maze Maze { get; private set; }
 
         public GameHost(IInputHost inputHost, ILogger logger)
         {
+            TrapController = new();
+
             CommandHost = new CommandHost();
             InputHost = inputHost;
             Logger = logger;
@@ -38,10 +43,14 @@ namespace Runtime
             Player.OnDead += () => Logger.Log("Player Dead!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Player.Inventory.AddItem(new("Trap material"), 3);
             Player.Inventory.AddItem(new("Key"));
+            Player.Inventory.AddItem(new("Trap"));
 
             Enemy = new(Logger);
             Enemy.Inventory.AddItem(new("Key"), 1);
             Enemy.OnChangeDestination += EnemyChangeDestination;
+
+            TrapController.AddEntity(Enemy);
+            TrapController.AddEntity(Player);
 
             ConfigureCommands();
 
@@ -59,12 +68,13 @@ namespace Runtime
         private void BuildMaze()
         {
             MazeBuilder builder = new();
-            Maze = builder.Build(20);
+            Maze = builder.Build(5);
         }
 
         private void ConfigureCommands()
         {
             CommandHost.AddCommand(GenerateCraftCommand());
+            CommandHost.AddCommand(new SetTrapCommand(Player, TrapController));
             CommandHost.AddCommand(new RobCommand(Player));
             CommandHost.AddCommand(new SetRoomSideObjectCommand());
             CommandHost.AddCommand(new OpenCommand(Player.Inventory));

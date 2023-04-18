@@ -11,7 +11,9 @@
 
             gameHost.StartGame();
 
-            while (true) { }
+            while (gameHost.State == GameState.InProgress) { }
+
+            while (Console.ReadLine() != "end") { }
         }
     }
 }

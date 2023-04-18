@@ -4,14 +4,14 @@ namespace Runtime
 {
     public enum GameState
     {
-        Initialization,
         InProgress,
-        Finished
+        GameOver,
+        Win
     }
 
     public sealed class GameHost
     {
-        public GameState GameState { get; set; }
+        public GameState State { get; private set; }
 
         public PlayerInput PlayerInput { get; private set; }
         public CommandHost CommandHost { get; private set; }
@@ -38,7 +38,7 @@ namespace Runtime
 
             Player = new();
             Player.OnChangeDestination += PlayerChangeDestination;
-            Player.OnDead += () => Logger.Log("Player Dead!");
+            Player.OnDead += GameOver;
             Player.Inventory.OnNewItems += (newItem, amount) => Logger.Log($"You have new items: {newItem.name} x{amount}");
             Player.Inventory.OnRemoveItems += (newItem, amount) => Logger.Log($"Items have removed: {newItem.name} x{amount}");
 
@@ -55,6 +55,20 @@ namespace Runtime
             CommandHost.SetContextObject(Player);
         }
 
+        private void GameOver()
+        {
+            Logger.Log("Player Dead!");
+
+            State = GameState.GameOver;
+        }
+
+        private void Win()
+        {
+            Logger.Log("You Win!");
+
+            State = GameState.Win;
+        }
+
         private void EnemyChangeDestination()
         {
             MentionNoise();
@@ -68,7 +82,7 @@ namespace Runtime
             var itemsToHide = new List<GameItem>() { new("Trap material"), new("Trap material"), new("Trap material") };
 
             MazeBuilder builder = new();
-            Maze = builder.Build(5);
+            Maze = builder.Build(25);
 
             foreach (var item in itemsToHide)
             {
@@ -83,7 +97,7 @@ namespace Runtime
 
             Maze.SetRandomFreeSpace(new Drawer());
 
-            Maze.SetRandomFreeSpace(new FinishDoor());
+            Maze.SetRandomFreeSpace(new FinishDoor(Win));
         }
 
         private void ConfigureCommands()
@@ -114,6 +128,8 @@ namespace Runtime
 
         public void StartGame()
         {
+            State = GameState.InProgress;
+
             Player.Spawn(Maze.GetRoom(0));
             Enemy.Spawn(Maze.GetRoom(2));
         }

@@ -2,6 +2,13 @@
 
 namespace Runtime
 {
+    public enum GameState
+    {
+        Initialization,
+        InProgress,
+        Finished
+    }
+
     public sealed class GameHost
     {
         public PlayerInput PlayerInput { get; private set; }
@@ -21,15 +28,13 @@ namespace Runtime
             Logger = logger;
             PlayerInput = new(InputHost, CommandHost);
 
-            //InputHost.OnPressKey += key => Console.WriteLine($"Player: {PlayerInput.InputLine}");
-
             BuildMaze();
 
             Player = new();
             Player.OnChangeDestination += PlayerChangeDestination;
-            Player.OnDead += () => Console.WriteLine("Player Dead!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Player.OnDead += () => Logger.Log("Player Dead!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-            Enemy = new();
+            Enemy = new(Logger);
             Enemy.OnChangeDestination += EnemyChangeDestination;
 
             ConfigureCommands();
@@ -41,10 +46,8 @@ namespace Runtime
         {
             MentionNoise();
 
-            Console.WriteLine(Enemy.Destination.RoomObjectAmount + " " + Enemy.Destination.Position);
-
             if (Enemy.Destination == Player.Destination)
-                Console.WriteLine("Maniac now in your room!");
+                Logger.Log("Maniac now in your room!");
         }
 
         private void BuildMaze()
@@ -56,13 +59,11 @@ namespace Runtime
         private void ConfigureCommands()
         {
             CommandHost.AddCommand(new SetRoomSideObjectCommand());
-            CommandHost.AddCommand(new ShowMazeObjectDataCommand());
             CommandHost.AddCommand(new EnterCommand(Player));
         }
 
         private void PlayerChangeDestination()
         {
-            SetEnemyNextPosition();
             ShowRoomData();
         }
 
@@ -74,7 +75,7 @@ namespace Runtime
 
         private void ShowRoomData()
         {
-            string logMessage = "You enter the room, there are:\n";
+            string logMessage = "\nYou enter the room, there are:\n";
             
             if (Player.Destination is MazeRoom room)
             {
@@ -89,22 +90,16 @@ namespace Runtime
                 logMessage += rightObject != null ? $"Right: {rightObject.GetType().Name}\n" : "";
             }
 
-            Console.WriteLine(logMessage);
+            Logger.Log(logMessage);
 
             if (Player.Destination == Enemy.Destination)
-                Console.WriteLine($"\nAlso there was a maniac!");
+                Logger.Log($"\nAlso there was a maniac!");
         }
 
         private void MentionNoise()
         {
             if(Vector2.Distance(Player.Destination.Position, Enemy.Destination.Position) == 1)
-                Console.WriteLine($"You hear noise in {Vector2Extensions.GetRelativeSide(Player.Destination.Position, Enemy.Destination.Position)} side...");
-        }
-
-        private void SetEnemyNextPosition()
-        {
-            //if(Player.PreviousDestination == Enemy.Destination)
-            //    Enemy.SetLastSeenPosition(Player.Position);
+                Logger.Log($"You hear noise in {Vector2Extensions.GetRelativeSide(Player.Destination.Position, Enemy.Destination.Position)} side...");
         }
     }
 }

@@ -52,8 +52,6 @@ namespace Runtime
 
         public MazeObject? GetRandomObject(Func<MazeObject, bool> predicate)
         {
-            Console.WriteLine("Objects in room: " + _roomSides.Count);
-
             var avaliableObjects = _roomSides.Values.Where(predicate);
 
             if (avaliableObjects.Count() < 1)

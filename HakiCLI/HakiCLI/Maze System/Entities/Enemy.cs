@@ -4,12 +4,15 @@
     {
         private MazeRoom _targetConjecturalDestination;
         private MazeEntity _target;
+        private ILogger _logger;
 
         private float _lastActionTime = 0;
         private float _actionInterval = 25000;
 
-        public Enemy()
+        public Enemy(ILogger logger)
         {
+            _logger = logger;
+
             OnAlive += OnEnemyAlive;
             OnDead += OnEnemyDead;
         }
@@ -46,7 +49,7 @@
             if (_target is not null)
             {
                 _target.OnChangeDestination += OnTargetChangeDestination;
-                Console.WriteLine("Maniac see you!");
+                _logger.Log("Maniac see you!");
             }
         }
 

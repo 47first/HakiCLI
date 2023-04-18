@@ -4,11 +4,11 @@
     {
         public void Execute(CommandContext context)
         {
-            if (context.Subject is not MazeRoom mazeRoom)
+            if (context.Subject is not Player player)
                 return;
 
             if(TryGetSideByArgs(context.Args, out RoomSide roomSide))
-                context.Subject = mazeRoom.GetObjectBySide(roomSide);
+                context.Subject = player.Destination.GetObjectBySide(roomSide);
         }
 
         private bool TryGetSideByArgs(string[] args, out RoomSide roomSide)

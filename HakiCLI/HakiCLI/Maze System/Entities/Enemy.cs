@@ -4,23 +4,20 @@ namespace Runtime
 {
     public class Enemy: MazeEntity
     {
-        private Vector2 _nextPosition = new(0, 0);
+        private Vector2 _lastSeenPlayerDirection = new Vector2(0, 0);
 
         private float _lastActionTime = 0;
         private float _actionInterval = 100;
 
-        private Maze _maze;
-
-        public Enemy(Maze maze)
+        public Enemy()
         {
-            OnDead += OnEnemyDead;
             OnAlive += OnEnemyAlive;
-            _maze = maze;
+            OnDead += OnEnemyDead;
         }
 
-        private void OnEnemyDead() => Time.FixedUpdate -= Action;
-
         private void OnEnemyAlive() => Time.FixedUpdate += Action;
+
+        private void OnEnemyDead() => Time.FixedUpdate -= Action;
 
         public void Action()
         {
@@ -29,28 +26,34 @@ namespace Runtime
             if (_lastActionTime < _actionInterval)
                 return;
 
-            Console.WriteLine("Enemy do action");
-
             _lastActionTime = 0;
 
-            MazeObject enterableObject = null;
+            Console.WriteLine("Enemy do action");
 
-            //if (_nextPosition != new Vector2(0, 0))
+            EnterNextRoom();
+        }
+
+        private void EnterNextRoom()
+        {
+            MazeObject? mazeObject = null;
+
+            //if (_lastSeenPlayerPosition != new Vector2(0, 0))
             //{
-            //    enterableObject = _curRoom.GetObjectBySide(Vector2Extensions.GetRelativeSide(Position, _nextPosition));
-            //    _nextPosition = new(0, 0);
+            //    mazeObject = Destination.GetObjectBySide(Vector2Extensions.GetRelativeSide(Position, _lastSeenPlayerPosition));
+
+            //    _lastSeenPlayerPosition = new Vector2(0, 0);
             //}
 
             //else
+                mazeObject = Destination.GetRandomObject(roomObject => roomObject is IEnterable);
 
-            enterableObject = _maze.GetRoomAt(Position).GetRandomObject(roomObject => roomObject is IEnterable);
-
-            (enterableObject as IEnterable)?.EnterBy(this);
+            if (mazeObject is IEnterable enterable)
+                enterable.EnterBy(this);
         }
 
-        public void SetNextPosition(Vector2 nextPosition)
+        public void SetLastSeenPosition(Vector2 lastSeenPosition)
         {
-            _nextPosition = nextPosition;
+            _lastSeenPlayerDirection = lastSeenPosition;
         }
     }
 }

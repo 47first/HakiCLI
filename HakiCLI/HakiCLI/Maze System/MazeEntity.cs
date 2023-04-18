@@ -1,28 +1,27 @@
-﻿using System.Numerics;
-
-namespace Runtime
+﻿namespace Runtime
 {
     public abstract class MazeEntity
     {
         private bool _isAlive;
-        private Vector2 _prevPosition;
-        private Vector2 _position;
+        private MazeRoom? _destination;
 
-        public event Action OnChangePosition;
+        public event Action OnChangeDestination;
         public event Action OnAlive;
         public event Action OnDead;
 
-        public Vector2 Position
+        public MazeRoom? Destination
         {
-            get => _position;
+            get => _destination;
             set
             {
-                _position = value;
-                OnChangePosition?.Invoke();
+                if (_destination == value)
+                    return;
+
+                _destination = value;
+
+                OnChangeDestination?.Invoke();
             }
         }
-
-        public Vector2 PreviousPosition => _prevPosition;
 
         public bool IsAlive
         {

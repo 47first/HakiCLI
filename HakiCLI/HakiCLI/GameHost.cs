@@ -23,28 +23,22 @@ namespace Runtime
 
             InputHost.OnPressKey += key => Console.WriteLine($"Player: {PlayerInput.InputLine}");
 
-            Player = new();
-            Player.OnChangePosition += SetEnemyNextPosition;
-            Player.OnChangePosition += ShowRoomData;
-            Player.OnChangePosition += ChangeCommandContextObject;
-
             BuildMaze();
 
             ConfigureCommands();
 
-            Enemy = new(Maze);
-            Enemy.OnChangePosition += MentionNoise;
+            Player = new();
+            Player.OnChangeDestination += PlayerChangeDestination;
+
+            CommandHost.SetContextObject(Player);
+
+            Enemy = new();
+            Enemy.OnChangeDestination += MentionNoise;
         }
-
-        private void ChangeCommandContextObject() => CommandHost.SetContextObject(Maze.GetRoomAt(Player.Position));
-
-        public void StartGame()
+        private void BuildMaze()
         {
-            Player.Position = Maze.GetRoom(0).Position;
-
-            Enemy.Position = Maze.GetRoom(2).Position;
-
-            Enemy.IsAlive = true;
+            MazeBuilder builder = new();
+            Maze = builder.Build(10);
         }
 
         private void ConfigureCommands()
@@ -54,17 +48,26 @@ namespace Runtime
             CommandHost.AddCommand(new EnterCommand(Player));
         }
 
-        private void BuildMaze()
+        private void PlayerChangeDestination()
         {
-            MazeBuilder builder = new();
-            Maze = builder.Build(10);
+            SetEnemyNextPosition();
+            ShowRoomData();
+        }
+
+        public void StartGame()
+        {
+            Player.Destination = Maze.GetRoom(0);
+            Enemy.Destination = Maze.GetRoom(2);
+
+            Player.IsAlive = true;
+            Enemy.IsAlive = true;
         }
 
         private void ShowRoomData()
         {
             string logMessage = "You enter the room, there are:\n";
             
-            if (Maze.GetRoomAt(Player.Position) is MazeRoom room)
+            if (Player.Destination is MazeRoom room)
             {
                 var leftObject = room.GetObjectBySide(RoomSide.Left);
                 var forwardObject = room.GetObjectBySide(RoomSide.Forward);
@@ -79,20 +82,20 @@ namespace Runtime
 
             Console.WriteLine(logMessage);
 
-            if (Player.Position == Enemy.Position)
-                Console.WriteLine($"\nAlso there was maniac!");
+            if (Player.Destination == Enemy.Destination)
+                Console.WriteLine($"\nAlso there was a maniac!");
         }
 
         private void MentionNoise()
         {
-            if(Vector2.Distance(Player.Position, Enemy.Position) == 1)
-                Console.WriteLine($"You hear noise in {Vector2Extensions.GetRelativeSide(Player.Position, Enemy.Position)} side...");
+            if(Vector2.Distance(Player.Destination.Position, Enemy.Destination.Position) == 1)
+                Console.WriteLine($"You hear noise in {Vector2Extensions.GetRelativeSide(Player.Destination.Position, Enemy.Destination.Position)} side...");
         }
 
         private void SetEnemyNextPosition()
         {
-            if(Player.PreviousPosition == Enemy.Position)
-                Enemy.SetNextPosition(Player.Position);
+            //if(Player.PreviousDestination == Enemy.Destination)
+            //    Enemy.SetLastSeenPosition(Player.Position);
         }
     }
 }

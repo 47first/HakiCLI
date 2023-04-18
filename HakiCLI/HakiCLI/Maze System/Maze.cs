@@ -12,7 +12,7 @@ namespace Runtime
 
         public bool ContainsRoomAt(Vector2 position) => GetRoomAt(position) != null;
 
-        public MazeRoom GetRoomAt(Vector2 position) => _rooms.FirstOrDefault(room => room.Position == position);
+        public MazeRoom? GetRoomAt(Vector2 position) => _rooms.FirstOrDefault(room => room.Position == position);
 
         public MazeRoom GetRoom(int index) => _rooms[index];
     }

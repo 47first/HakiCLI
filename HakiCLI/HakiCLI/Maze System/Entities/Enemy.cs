@@ -44,6 +44,9 @@
 
         private void UpdateTarget()
         {
+            if (IsAlive == false)
+                return;
+
             _target = Destination.Entities.FirstOrDefault(entity => entity.IsAlive && entity is Player);
 
             if (_target is not null)

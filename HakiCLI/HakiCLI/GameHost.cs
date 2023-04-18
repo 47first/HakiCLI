@@ -36,17 +36,15 @@ namespace Runtime
 
             BuildMaze();
 
-            Maze.SetRandomFreeSpace(new FinishDoor());
-
             Player = new();
             Player.OnChangeDestination += PlayerChangeDestination;
-            Player.OnDead += () => Logger.Log("Player Dead!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Player.Inventory.AddItem(new("Trap material"), 3);
-            Player.Inventory.AddItem(new("Key"));
-            Player.Inventory.AddItem(new("Trap"));
+            Player.OnDead += () => Logger.Log("Player Dead!");
+            Player.Inventory.OnNewItems += (newItem, amount) => Logger.Log($"You have new items: {newItem.name} x{amount}");
+            Player.Inventory.OnRemoveItems += (newItem, amount) => Logger.Log($"Items have removed: {newItem.name} x{amount}");
 
             Enemy = new(Logger);
             Enemy.Inventory.AddItem(new("Key"), 1);
+            Enemy.OnDead += MentionDropNoise;
             Enemy.OnChangeDestination += EnemyChangeDestination;
 
             TrapController.AddEntity(Enemy);
@@ -67,8 +65,25 @@ namespace Runtime
 
         private void BuildMaze()
         {
+            var itemsToHide = new List<GameItem>() { new("Trap material"), new("Trap material"), new("Trap material") };
+
             MazeBuilder builder = new();
             Maze = builder.Build(5);
+
+            foreach (var item in itemsToHide)
+            {
+                var drawer = new Drawer();
+
+                drawer.AddItem(item);
+
+                Maze.SetRandomFreeSpace(drawer);
+            }
+
+            Maze.SetRandomFreeSpace(new Drawer());
+
+            Maze.SetRandomFreeSpace(new Drawer());
+
+            Maze.SetRandomFreeSpace(new FinishDoor());
         }
 
         private void ConfigureCommands()
@@ -78,6 +93,7 @@ namespace Runtime
             CommandHost.AddCommand(new RobCommand(Player));
             CommandHost.AddCommand(new SetRoomSideObjectCommand());
             CommandHost.AddCommand(new OpenCommand(Player.Inventory));
+            CommandHost.AddCommand(new CheckCommand(Player.Inventory));
             CommandHost.AddCommand(new EnterCommand(Player));
         }
 
@@ -129,6 +145,17 @@ namespace Runtime
         {
             if(Vector2.Distance(Player.Destination.Position, Enemy.Destination.Position) == 1)
                 Logger.Log($"You hear noise in {Vector2Extensions.GetRelativeSide(Player.Destination.Position, Enemy.Destination.Position)} side...");
+        }
+
+        private void MentionDropNoise()
+        {
+            float distance = Vector2.Distance(Player.Destination.Position, Enemy.Destination.Position);
+
+            if(distance == 0)
+                Logger.Log($"You seen how maniac fell dead by trap...");
+
+            if (distance == 1)
+                Logger.Log($"You hear something droped in {Vector2Extensions.GetRelativeSide(Player.Destination.Position, Enemy.Destination.Position)} side...");
         }
     }
 }

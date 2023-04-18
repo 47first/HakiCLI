@@ -1,13 +1,12 @@
-﻿using System.Numerics;
-
-namespace Runtime
+﻿namespace Runtime
 {
     public class Enemy: MazeEntity
     {
-        private Vector2 _lastSeenPlayerDirection = new Vector2(0, 0);
+        private MazeRoom _targetConjecturalDestination;
+        private MazeEntity _target;
 
         private float _lastActionTime = 0;
-        private float _actionInterval = 100;
+        private float _actionInterval = 25000;
 
         public Enemy()
         {
@@ -28,32 +27,80 @@ namespace Runtime
 
             _lastActionTime = 0;
 
-            Console.WriteLine("Enemy do action");
+            if (_target is null)
+            {
+                UpdateTarget();
 
-            EnterNextRoom();
+                if (_target is not null)
+                    return;
+            }
+
+            if(TryKillTarget() == false)
+                EnterNextRoom();
+        }
+
+        private void UpdateTarget()
+        {
+            _target = Destination.Entities.FirstOrDefault(entity => entity.IsAlive && entity is Player);
+
+            if (_target is not null)
+            {
+                _target.OnChangeDestination += OnTargetChangeDestination;
+                Console.WriteLine("Maniac see you!");
+            }
+        }
+
+        private void OnTargetChangeDestination()
+        {
+            _targetConjecturalDestination = _target.Destination;
+
+            RemoveTarget();
+        }
+
+        private void RemoveTarget()
+        {
+            if (_target is null)
+                return;
+
+            _target.OnChangeDestination -= OnTargetChangeDestination;
+
+            _target = null;
+        }
+
+        private bool TryKillTarget()
+        {
+            if (_target is not null && _target.Destination == Destination)
+            {
+                _target.Kill();
+
+                RemoveTarget();
+
+                return true;
+            }
+
+            return false;
         }
 
         private void EnterNextRoom()
         {
             MazeObject? mazeObject = null;
 
-            //if (_lastSeenPlayerPosition != new Vector2(0, 0))
-            //{
-            //    mazeObject = Destination.GetObjectBySide(Vector2Extensions.GetRelativeSide(Position, _lastSeenPlayerPosition));
+            if (_targetConjecturalDestination is not null)
+            {
+                var doorSide = Vector2Extensions.GetRelativeSide(Destination.Position, _targetConjecturalDestination.Position);
 
-            //    _lastSeenPlayerPosition = new Vector2(0, 0);
-            //}
+                mazeObject = Destination.GetObjectBySide(doorSide);
 
-            //else
+                _targetConjecturalDestination = null;
+            }
+
+            else
                 mazeObject = Destination.GetRandomObject(roomObject => roomObject is IEnterable);
 
             if (mazeObject is IEnterable enterable)
                 enterable.EnterBy(this);
-        }
 
-        public void SetLastSeenPosition(Vector2 lastSeenPosition)
-        {
-            _lastSeenPlayerDirection = lastSeenPosition;
+            UpdateTarget();
         }
     }
 }

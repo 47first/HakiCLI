@@ -23,19 +23,24 @@ namespace Runtime
             Position = position;
         }
 
+        public int RoomObjectAmount => _roomSides.Count;
+
+        public IEnumerable<MazeEntity> Entities => _entities;
+
         public bool TryAddMazeObject(RoomSide side, MazeObject mazeObject) => _roomSides.TryAdd(side, mazeObject);
 
-        public void AddEntity(MazeEntity mazeEntity)
+        public void AddMazeObject(RoomSide side, MazeObject mazeObject)
         {
-            _entities.Add(mazeEntity);
+            if (_roomSides.ContainsKey(side))
+                _roomSides[side] = mazeObject;
 
-            mazeEntity.Destination = this;
+            else
+                _roomSides.Add(side, mazeObject);
         }
 
-        public void RemoveEntity(MazeEntity mazeEntity)
-        {
-            _entities.Remove(mazeEntity);
-        }
+        public void AddEntity(MazeEntity mazeEntity) => _entities.Add(mazeEntity);
+
+        public void RemoveEntity(MazeEntity mazeEntity) => _entities.Remove(mazeEntity);
 
         public MazeObject GetObjectBySide(RoomSide side)
         {

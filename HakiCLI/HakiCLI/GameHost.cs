@@ -21,20 +21,32 @@ namespace Runtime
             Logger = logger;
             PlayerInput = new(InputHost, CommandHost);
 
-            InputHost.OnPressKey += key => Console.WriteLine($"Player: {PlayerInput.InputLine}");
+            //InputHost.OnPressKey += key => Console.WriteLine($"Player: {PlayerInput.InputLine}");
 
             BuildMaze();
 
-            ConfigureCommands();
-
             Player = new();
             Player.OnChangeDestination += PlayerChangeDestination;
-
-            CommandHost.SetContextObject(Player);
+            Player.OnDead += () => Console.WriteLine("Player Dead!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
             Enemy = new();
-            Enemy.OnChangeDestination += MentionNoise;
+            Enemy.OnChangeDestination += EnemyChangeDestination;
+
+            ConfigureCommands();
+
+            CommandHost.SetContextObject(Player);
         }
+
+        private void EnemyChangeDestination()
+        {
+            MentionNoise();
+
+            Console.WriteLine(Enemy.Destination.RoomObjectAmount + " " + Enemy.Destination.Position);
+
+            if (Enemy.Destination == Player.Destination)
+                Console.WriteLine("Maniac now in your room!");
+        }
+
         private void BuildMaze()
         {
             MazeBuilder builder = new();
@@ -56,11 +68,8 @@ namespace Runtime
 
         public void StartGame()
         {
-            Player.Destination = Maze.GetRoom(0);
-            Enemy.Destination = Maze.GetRoom(2);
-
-            Player.IsAlive = true;
-            Enemy.IsAlive = true;
+            Player.Spawn(Maze.GetRoom(0));
+            Enemy.Spawn(Maze.GetRoom(2));
         }
 
         private void ShowRoomData()

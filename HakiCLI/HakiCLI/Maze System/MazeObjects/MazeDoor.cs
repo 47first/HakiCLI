@@ -11,7 +11,7 @@
 
         public void EnterBy(MazeEntity entity)
         {
-            entity.Position = ConnectedRoom.Position;
+            entity.Destination = ConnectedRoom;
         }
     }
 }

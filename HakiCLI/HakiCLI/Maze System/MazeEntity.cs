@@ -14,10 +14,14 @@
             get => _destination;
             set
             {
-                if (_destination == value)
+                if (_destination == value || value == null)
                     return;
 
+                _destination?.RemoveEntity(this);
+
                 _destination = value;
+
+                _destination.AddEntity(this);
 
                 OnChangeDestination?.Invoke();
             }
@@ -26,7 +30,7 @@
         public bool IsAlive
         {
             get => _isAlive;
-            set
+            private set
             {
                 if (value == _isAlive)
                     return;
@@ -39,6 +43,17 @@
                 else
                     OnDead?.Invoke();
             }
+        }
+
+        public void Kill() => IsAlive = false;
+
+        public void Relive() => IsAlive = true;
+
+        public void Spawn(MazeRoom destination)
+        {
+            IsAlive = true;
+
+            Destination = destination;
         }
     }
 }

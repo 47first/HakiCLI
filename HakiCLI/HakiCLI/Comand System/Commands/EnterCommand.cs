@@ -23,11 +23,8 @@
         private bool ContainsEnterArg(string[] args)
         {
             foreach (var arg in args)
-            {
-                Console.WriteLine(arg);
                 if (arg == "enter")
                     return true;
-            }
 
             return false;
         }

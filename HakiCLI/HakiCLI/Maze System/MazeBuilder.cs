@@ -39,8 +39,8 @@ namespace Runtime
             var roomASide = Vector2Extensions.GetRelativeSide(roomA.Position, roomB.Position);
             var roomBSide = Vector2Extensions.GetRelativeSide(roomB.Position, roomA.Position);
 
-            roomA.TryAddMazeObject(roomASide, new MazeDoor(roomB));
-            roomB.TryAddMazeObject(roomBSide, new MazeDoor(roomA));
+            roomA.AddMazeObject(roomASide, new MazeDoor(roomB));
+            roomB.AddMazeObject(roomBSide, new MazeDoor(roomA));
         }
     }
 }

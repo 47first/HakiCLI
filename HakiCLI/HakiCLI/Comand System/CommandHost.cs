@@ -8,6 +8,13 @@
 
         public void SetContextObject(object contextObject) => ContextObject = contextObject;
 
+        private GameHost _gameHost;
+
+        public CommandHost(GameHost gameHost)
+        {
+            _gameHost = gameHost;
+        }
+
         public CommandHost AddCommand(ICommand command)
         {
             _commands.Add(command);
@@ -16,6 +23,9 @@
 
         public void Request(string args)
         {
+            if (_gameHost.State != GameState.InProgress)
+                return;
+
             var context = new CommandContext(args.Trim().ToLower().Split(' '), ContextObject);
 
             foreach (var command in _commands)

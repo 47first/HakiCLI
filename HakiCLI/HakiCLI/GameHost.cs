@@ -28,7 +28,7 @@ namespace Runtime
         {
             TrapController = new();
 
-            CommandHost = new CommandHost();
+            CommandHost = new CommandHost(this);
             InputHost = inputHost;
             Logger = logger;
 
@@ -57,20 +57,20 @@ namespace Runtime
 
         private void GameOver()
         {
+            State = GameState.GameOver;
+
             Logger.Log("Player Dead!");
 
             Enemy.Kill();
-
-            State = GameState.GameOver;
         }
 
         private void Win()
         {
+            State = GameState.Win;
+
             Logger.Log("You Win!");
 
             Enemy.Kill();
-
-            State = GameState.Win;
         }
 
         private void EnemyChangeDestination()
@@ -169,6 +169,9 @@ namespace Runtime
 
         private void MentionDropNoise()
         {
+            if (State != GameState.InProgress)
+                return;
+
             float distance = Vector2.Distance(Player.Destination.Position, Enemy.Destination.Position);
 
             if(distance == 0)

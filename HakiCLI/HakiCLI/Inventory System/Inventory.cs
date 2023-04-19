@@ -30,7 +30,7 @@
             if(_itemCells[item] <= 0)
                 _itemCells.Remove(item);
 
-            OnRemoveItems(item, amount);
+            OnRemoveItems?.Invoke(item, amount);
         }
 
         public int GetItemAmount(GameItem item)
